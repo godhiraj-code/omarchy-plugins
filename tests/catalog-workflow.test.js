@@ -6,8 +6,8 @@ const ROOT = resolve(__dirname, "..")
 const workflow = readFileSync(
   resolve(ROOT, ".github/workflows/update-plugin-catalog.yml"),
   "utf8"
-)
-const registry = readFileSync(resolve(ROOT, "plugins.txt"), "utf8")
+).replace(/\r\n/g, "\n")
+const registry = readFileSync(resolve(ROOT, "plugins.txt"), "utf8").replace(/\r\n/g, "\n")
 const readme = readFileSync(resolve(ROOT, "README.md"), "utf8")
 const generator = readFileSync(
   resolve(ROOT, "scripts/generate-plugin-catalog.mjs"),
@@ -31,7 +31,10 @@ const expectedUrls = [
   "https://github.com/yuters/omarchy-flight-radar.git",
   "https://github.com/brianblakely/omarchy-codex-notifications.git",
   "https://github.com/keithnyc/omanetwatch.git",
-  "https://github.com/kristofferR/omarchy-expose.git"
+  "https://github.com/kristofferR/omarchy-expose.git",
+  "https://github.com/Ahmed-Sinkeat/keysmith.git",
+  "https://github.com/Cause-of-a-Kind/omaloom.git",
+  "https://github.com/ivankuznetsov/hive-omarchy.git"
 ]
 let passed = 0
 
@@ -41,7 +44,7 @@ function test(name, callback) {
   process.stdout.write(`ok ${passed} - ${name}\n`)
 }
 
-test("plugins.txt contains the sixteen locally curated standalone URLs in deterministic order", () => {
+test("plugins.txt contains the locally curated standalone URLs in deterministic order", () => {
   assert.equal(registry.endsWith("\n"), true)
   assert.deepEqual(registry.trimEnd().split("\n"), expectedUrls)
 })
